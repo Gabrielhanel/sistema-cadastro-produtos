@@ -124,11 +124,14 @@ networks:
 
 Após mudar essas configurações  e reiniciar o container, subiu corretamente:
 * `docker build`
+
 ![alt text](./evidencias/docker/docker-build.png)
 
 * `docker compose up -d`:
+
 ![alt text](./evidencias/docker/docker-compose-up-pt1.png)
 ![alt text](./evidencias/docker/docker-compose-up-pt2.png)
 
 * `docker ps`
+
 ![alt text](./evidencias/docker/docker-ps.png)
