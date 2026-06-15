@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Produtos</title>
+    <style>
+        .search-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            max-width: 400px;
+        }
+        .search-row input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .search-row button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .search-row button:hover { background-color: #1976D2; }
+
+        .btn-clear {
+            background: none;
+            border: 1px solid #ccc;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #555;
+        }
+        .btn-clear:hover { background: #f5f5f5; }
+
+        .search-feedback {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body style="font-family: sans-serif; margin: 20px;">
+    <h1>ADICIONAR NOVO PRODUTO</h1>
+    <form action="/post/products" method="post" style="margin-bottom: 30px; display: flex; gap: 10px;">
+        <input type="text" name="nome" placeholder="Nome do produto" required>
+        <input type="number" name="preco" step="0.01" placeholder="Preço (R$)" required>
+        <input type="number" name="quantidade" placeholder="Quantidade" required>
+        <button type="submit" style="background-color: #2196F3; color: white; border: none; padding: 5px 15px; cursor: pointer; border-radius: 4px;">
+            Cadastrar
+        </button>
+    </form>
+
+    <h1>Lista de Produtos</h1>
+
+    <!-- Barra de pesquisa -->
+    <div class="search-row">
+        <input
+            type="text"
+            id="search-input"
+            placeholder="Buscar por nome do produto..."
+            value="{{ search_nome if search_nome else '' }}"
+        />
+        <button onclick="searchByName()">Buscar</button>
+        {% if search_id %}
+        <a href="/" style="text-decoration:none;">
+            <button type="button" class="btn-clear">✕ Limpar</button>
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Feedback da busca -->
+{% if search_nome %}
+    {% if products %}
+        <p class="search-feedback">Resultado para "<strong>{{ search_nome }}</strong>":</p>
+    {% else %}
+        <p class="search-feedback">Nenhum produto encontrado com o nome "<strong>{{ search_nome }}</strong>".</p>
+    {% endif %}
+{% endif %}
+
+    <ul style="list-style: none; padding: 0;">
+        {% for product in products %}
+        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+
+            <form action="/update/{{ product.product_id }}" method="post" style="display: flex; gap: 5px; flex-grow: 1;">
+                <input type="text" name="nome" value="{{ product.nome }}" required
+                       style="flex-grow: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                
+                <input type="number" name="preco" value="{{ product.preco }}" step="0.01" required
+                       style="width: 100px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                
+                <input type="number" name="quantidade" value="{{ product.quantidade }}" required
+                       style="width: 80px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                
+                <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
+                    Atualizar
+                </button>
+            </form>
+
+            <form action="/delete/{{ product.product_id }}" method="post" style="margin: 0;">
+                <button type="submit" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
+                    Deletar
+                </button>
+            </form>
+        </li>
+        {% else %}
+        <li style="color: #888; font-style: italic;">Nenhum produto cadastrado ainda.</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+function searchByName() {
+    const nome = document.getElementById('search-input').value.trim();
+    if (!nome) {
+        window.location.href = '/';
+        return;
+    }
+    window.location.href = `/get/products/${encodeURIComponent(nome)}`;
+}
+
+        document.getElementById('search-input').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') searchByName();
+        });
+    </script>
+</body>
+</html>

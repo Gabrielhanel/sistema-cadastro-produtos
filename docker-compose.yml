@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+
+  web:
+  # builda a imagem usando o Dockerfile na raiz do projeto
+    build: .
+
+    # Porta em que a aplicação esta rodando
+    ports:
+      - "5153:5153"
+
+    # variaveis de ambiente referentes ao banco de dados
+    environment:
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+
+    # não faz sentido esse serviço subir se o banco de dados não tiver subido antes, por isso adicionamos essa "dependência" ao outro serviço por segurança 
+    depends_on:
+      - db
+
+    volumes:
+    # sincroniza o código local com o container
+      - ./src/server:/app
+
+    networks:
+      - app-network
+
+  db:
+    image: postgres:18
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    networks:
+      - app-network
+
+# nessa configuração, deixamos a rede explicitamente em bridge (ponte) para garantir que ambos os serviços se comuniquem
+networks:
+  app-network:
+    driver: bridge
+
+# persistencia do banco de dados usando volumes
+volumes:
+  postgres_data:
