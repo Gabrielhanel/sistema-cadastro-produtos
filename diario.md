@@ -123,7 +123,7 @@ networks:
 ```
 
 Após mudar essas configurações  e reiniciar o container, subiu corretamente:
-* `docker build`:
+* `docker build`
 ![alt text](./evidencias/docker/docker-build.png)
 
 * `docker compose up -d`:
