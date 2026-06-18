@@ -22,7 +22,7 @@
     ```
 
 * Depois de considerar que o meu código estava pronto, eu pedi pra IA identificar possiveis erros lógicos, por exemplo:
-    * Sem notar eu estava declarando 2 vezes a variavel `app`, uma pro flask e outra pra fastApi (como o python aponta esse erro em tempo de compilação, acabei não percebendo), e decidi por retirar a do fastAPI e consequentemente a parte do middleware que controlava o acesso do frontend às requisições, ou seja:
+    * Sem notar eu estava declarando 2 vezes a variavel `app`, uma pro flask e outra pra fastApi (como o python não aponta esse erro automaticamente, acabei não percebendo), e decidi por retirar a do fastAPI e consequentemente a parte do middleware que controlava o acesso do frontend às requisições, ou seja:
 
     ```python
     app.add_middleware(
@@ -32,7 +32,7 @@
         allow_headers=["*"],
     )
     ```
-
+     * _Observação: como o Flask serve o HTML diretamente, o CORS se torna desnecessário_
     * Ao declarar o endereço do db, eu estava declarando as variaveis de forma errada:
 
     ``` python
@@ -88,9 +88,11 @@ EXPOSE 3000
 CMD ["node", "server.js"]
 ```
 
-* Ai só fui alterando para o contexto do projeto, usando também a IA como apoio. Após procurei no dockerhub uma imagem python. Pensei em usar a alpinw, por ser a mais leve que eu conheço, mas após procurar um auxilio na ia para tomada de decisão, descobri que o driver do postgresql que usei (psycopg2-binary) é compilado para glibc, e o alpine usa musl libc, então quebraria. Também pq ambos são baseados em imagens linux diferentes (alpine baseado em Alpine Linux e slim baseado em Debian)
+* Ai só fui alterando para o contexto do projeto, usando também a IA como apoio. Após procurei no dockerhub uma imagem python. Pensei em usar a alpine, por ser a mais leve que eu conheço, mas após procurar um auxilio na IA para tomada de decisão, descobri que o driver do postgresql que usei (psycopg2-binary) é compilado para glibc, e o alpine usa musl libc, então quebraria. Também pq ambos são baseados em imagens linux diferentes (alpine baseado em Alpine Linux e slim baseado em Debian)
 
 * Tanto glibc quanto musl libc são bibliotecas em C que fornecem as system calls para que os programas se comuniquem com o sistema operacional
+
+* Usei a psycopg2-binary ao invés da psycopg2 principalmente pela simplicidade; a psycopg2 exige que tenhamos o compilador da linguagem C e uma série de configurações a mais.
 
 ### Docker compose - criação
 * Talvez a parte mais dificil pra mim construir no projeto.. 
