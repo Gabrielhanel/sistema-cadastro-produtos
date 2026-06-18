@@ -1,4 +1,4 @@
-# imagem base do python mais básica
+# imagem base do python mais básica; como comentado também no diário, usamos a slim pois o driver do postgresql que usei (psycopg2-binary) é compilado para glibc, e o alpine usa musl libc, então quebraria ao tentarmos subir o container
 FROM python:3.11-slim
 
 # diretório dentro do container, usei /app por convenção
@@ -11,6 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # copia o restante do projeto para o container
+# se apenas o código mudar, o Docker reutiliza a camada do pip install sem reinstalar todos os pacotes do requirements.txt novamente
 COPY . .
 
 # porta definida no projeto para rodar a api (app.run(debug=True, port=5153))
