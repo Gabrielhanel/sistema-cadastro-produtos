@@ -37,6 +37,7 @@ sistema-cadastro-produtos/
 * Docker instalado [Documentação](https://www.docker.com/get-started/)
 * Docker Compose instalado [Documentação](https://docs.docker.com/compose/)
 * .env configurado
+  * _Observação importante: As credenciais do banco não precisam existir previamente; o Docker irá criá-las automaticamente com os valores que você definir no .env._
 
 ## Configuração
 1. Clone o repositório
@@ -76,7 +77,8 @@ docker compose down
 |GET   |/     |lista todos    |
 |GET   |/get/products/{nome} |busca um produto por nome|
 |POST  |/post/products     |cadastra novo  |
-|POST |/delete/{id}|remove por ID  |
+|POST |/delete/{product_id}|remove o produto fazendo a requisição através do ID do produto  |
+|POST |/update/{product_id}|atualiza algum dos dados do produto através do por ID  |
 
 * Estrutura do banco:
 produtos
@@ -88,7 +90,7 @@ produtos
 | `preco` | float |
 | `quantidade` | integer |
 
-## Gerado por IA
+## Uso de IA no desenvolvimento
 * Frontend
 * Algumas correções pontuais, principalmente de sintaxe (prefiro a do java, mas optei por fazer em python pelo fato da sintaxe ser mais simples) - tem mais detalhado no diario
 * Auxilio na construção do docker compose
