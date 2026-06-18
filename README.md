@@ -74,7 +74,7 @@ docker compose down
 |Método  |Rota            |O que faz      |
 |--------|----------------|---------------|
 |GET   |/     |lista todos    |
-|GET   |/get/products/{nome} |busca um por ID|
+|GET   |/get/products/{nome} |busca um produto por nome|
 |POST  |/post/products     |cadastra novo  |
 |POST |/delete/{id}|remove por ID  |
 
