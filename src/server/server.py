@@ -9,9 +9,11 @@ load_dotenv()
 # decidi construir o backend com flask principalmente por familiariadade e pela sintaxe simples mesmo
 app = Flask(__name__)  
 
+db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
 db_port = os.getenv('DB_PORT')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{db_password}@db:{db_port}/db_produtos'
+db_name = os.getenv('DB_NAME')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@db:{db_port}/{db_name}'
 
 # da mesma forma que o flask, usei o sqlalchemy pela familiaridade e principalmente pelo fato de poder lidar com varios bancos diferentes praticamente só trocando a URI
 db = SQLAlchemy(app)

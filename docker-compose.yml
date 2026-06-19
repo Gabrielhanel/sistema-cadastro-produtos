@@ -18,24 +18,35 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
 
-    # não faz sentido esse serviço subir se o banco de dados não tiver subido antes, por isso adicionamos essa "dependência" ao outro serviço por segurança 
+    # não faz sentido esse serviço subir se o banco de dados não tiver subido antes, por isso adicionamos essa "dependência" ao outro serviço por segurança. Devido à condition, o serviço web só vai subir quando o serviço db estiver saudável. 
     depends_on:
-      - db
+          db:
+            condition: service_healthy
 
     volumes:
-    # sincroniza o código local com o container
-      - ./src/server:/app
+      - .:/app
 
     networks:
       - app-network
 
   db:
+  # usamos essa imagem, pois como é a mais recente, acredito ter mais suporte à funcionalidades mais novas do postgres, além de ser a mais atualizada em termos de segurança
     image: postgres:18
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
-
+    healthcheck:
+    # comando para para verificar se o postgres está pronto para receber conexões
+      test: pg_isready -U postgres -d ${DB_NAME}
+      # tempo entre cada tentativa de verificação
+      interval: 5s
+      # tempo limite que o comando 'pg_isready' tem para responder antes de ser considerado uma falha
+      timeout: 5s
+      # falhas consecutivas permitidas antes de definir o banco como "doente"
+      retries: 5
+      # tempo para o banco criar os arquivos antes de começar analisa-lo
+      start_period: 10s
     volumes:
       - postgres_data:/var/lib/postgresql
 

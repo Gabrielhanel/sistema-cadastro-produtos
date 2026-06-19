@@ -47,6 +47,9 @@ cd sistema-cadastro-produtos
 ```
 
 2. Crie um arquivo chamado .env, copie o .env.example e preencha com suas credenciais
+  * Observação: a variavel DB_PORT tem que ser 5432, pois é a porta padrão do postgreSQL. Os outros dados podem ser o que você quiser
+
+3. Abra o docker desktop
 
 ## Rodando o projeto
 ### Subir os containers
