@@ -1,6 +1,8 @@
 # Sistema de cadastro de produtos
-### Optei por fazer algo mais simples, basicamente é um crud onde podemos ver todos os produtos cadastrados, adicionar, pesquisar, atualizar e remover produtos
+* Optei por fazer algo mais simples, basicamente é um crud onde podemos ver todos os produtos cadastrados, adicionar, pesquisar, atualizar e remover produtos
 
+## Autor
+* Gabriel Hanel (1135926)
 ## Tecnologias utilizadas:
 * Para o backend utilizei python + flask e sqlalchemy, principalmente pela simplicidade, familiaridade e pela sintaxe simples; o flask acho simples num geral para a parte de construção e configuração das rotas; o SQLalchemy, além da questão da sintaxe simples, gosto principalmente pela versatilidade, pois caso quisessemos poderiamos trocar o banco de dados usado na aplicação trocando praticamente só o `SQLALCHEMY_DATABASE_URI` 
 
