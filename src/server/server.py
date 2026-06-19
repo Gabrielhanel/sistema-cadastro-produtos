@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@d
 # da mesma forma que o flask, usei o sqlalchemy pela familiaridade e principalmente pelo fato de poder lidar com varios bancos diferentes praticamente só trocando a URI
 db = SQLAlchemy(app)
 
-# criei uma classe pra usar como uma especie de molde usando a estrutura sugerida pela IA
+# criei uma classe pra usar como uma especie de molde
 class Products(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), unique=True, nullable=False)
